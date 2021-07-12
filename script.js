@@ -1,17 +1,81 @@
-// Assignment Code
-var generateBtn = document.querySelector("#generate");
+let generateBtn = document.querySelector("#generate");
+const randomFunc = {
+  lower: getRandomLower,
+  upper: getRandomUpper,
+  number: getRandomNumber,
+  symbol: getRandomSymbol
+};
 
-// Write password to the #password input
+// generator functions
+function getRandomUpper() {
+  return String.fromCharCode(Math.floor(Math.random() * 26) + 65);
+}
+
+function getRandomLower() {
+  return String.fromCharCode(Math.floor(Math.random() * 26) + 97);
+}
+
+function getRandomNumber() {
+  return String.fromCharCode(Math.floor(Math.random() * 10) + 48);
+}
+
+function getRandomSymbol() {
+  const symbols = "!@#$%^&*_-=+;:'}{][?|/<>";
+  return symbols[Math.floor(Math.random() * symbols.length)];
+}
+
+console.log(getRandomUpper());
+console.log(getRandomLower());
+console.log(getRandomNumber());
+console.log(getRandomSymbol());
+
+function generatePassword() {
+  // var randompassword 
+  //make a generate password
+  //create a prompt for password length
+  let passwordLength = window.prompt("How many characters would you like your password to be?")
+
+  if (passwordLength < 8 || passwordLength > 128) {
+    window.alert("Please enter a number between 8 and 128.")
+    return
+  } else {
+    let useUpperCase = window.confirm("Would you like to use Upper Case Characters?");
+    let useLowerCase = window.confirm("Would you like to use Lower Case Characters?");
+    let useSpecial = window.confirm("Would you like to use Special Characters?");
+    let useNumber = window.confirm("Would you like to use Number Characters?");
+  }
+    // console.log(useSpecial);
+    // console.log(useNumber);
+    // console.log(useLowerCase);
+    // console.log(useUpperCase);
+    // console.log(passwordLength);
+  }
+  //store that response in a variable/array
+  //comfirm for use lower case letters
+  //comfirm for upper case letters
+  //confirm for special characters
+  //confirm for numbers
+  //create an array of lower case, upper case, special, and numbers
+  // randomly generate the included characters. math.random, math.floor
+  // mix them up into random string
+  
+  
+  // return randompassword.join()
+
+
 function writePassword() {
-  var password = generatePassword();
-  var passwordText = document.querySelector("#password");
+  let password = generatePassword();
+  let passwordText = document.querySelector("#password");
 
   passwordText.value = password;
+ 
+ 
 
 }
 
-// Add event listener to generate button
-generateBtn.addEventListener("click", writePassword);
+ generateBtn.addEventListener("click", writePassword);
+
+
 
 
 //Click button to generate password.
