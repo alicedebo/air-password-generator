@@ -1,13 +1,6 @@
-let generateBtn = document.querySelector("#generate");
-let randomFunc = {
-  lower: getRandomLower,
-  upper: getRandomUpper,
-  number: getRandomNumber,
-  symbol: getRandomSymbol
-}
-
-
-// generator functions
+var generateBtn = document.querySelector("#generate");
+var useUpperCase = []
+//Sets the standard for where they pull from.
 function getRandomUpper() {
   return String.fromCharCode(Math.floor(Math.random() * 26) + 65);
 }
@@ -21,57 +14,64 @@ function getRandomNumber() {
 }
 
 function getRandomSymbol() {
-  const symbols = "!@#$%^&*_-=+;:'}{][?|/<>";
+  const symbols = "!@#$%^&*_-=+;:'}{][?|/<>,.";
   return symbols[Math.floor(Math.random() * symbols.length)];
 }
 
-function getPassword(getRandomUpper, getRandomLower, getRandomSymbol, getRandomNumber, passwordLength){
-let password = ""
 
-for (let i = 0; i < passwordLength; i++) {
-  if (Math.random() < 0.2){
-    password += getRandomUpper();
+//how the calculations work
+function getPassword(useUpperCase, useLowerCase, useSpecial, useNumbers, passwordLength){
+  var randomArray= []
+  var randomFunc = {}
+  
+  if (useUpperCase === true){
+    randomFunc.trueUpper = getRandomUpper
+    randomArray.push("trueUpper")
   }
-    else if (Math.random() <= 0.4){
-      password += getRandomLower();
-    }
-    else if (Math.random() >= 0.8){
-      password += getRandomSymbol();
-    }
-    else if (Math.random() <= 0.6){
-      password += getRandomNumber();
-    }
-    
+  if (useLowerCase === true){
+    randomFunc.trueLower = getRandomLower
+    randomArray.push("trueLower")
   }
- 
-  return password
+  if (useSpecial === true){
+    randomFunc.trueSymbol = getRandomSymbol
+    randomArray.push("trueSymbol")
+  }
+  if (useNumbers === true){
+    randomFunc.trueNumbers = getRandomNumber
+    randomArray.push("trueNumbers")
+  }
+
+  var password = ""
+  const typesCount = useUpperCase + useLowerCase + useSpecial + useNumbers;
+  if (typesCount === 0)
+  return ""
+  for (let i = 0; i < passwordLength; i++) {
+  var randomNumber = Math.floor(Math.random() * randomArray.length)
+  randomFunc[randomArray[randomNumber]]
+  password += randomFunc[randomArray[randomNumber]]();
 }
-
+return password
+}
+//asks user for criteria
 function generatePassword() {
-  let passwordLength = window.prompt("How many characters would you like your password to be?")
-  let allValues = (getRandomUpper, getRandomLower, getRandomNumber, getRandomSymbol)
-
+  var passwordLength = window.prompt("How many characters would you like your password to be?")
+  
   if (passwordLength < 8 || passwordLength > 128) {
     window.alert("Please enter a number between 8 and 128.")
-    // generatePassword.push(passwordLength)
-    return
   } else {
-    let getRandomUpper = window.confirm("Would you like to use UPPER Case Characters?");
-    let getRandomLower = window.confirm("Would you like to use lower Case Characters?");
-    let getRandomSymbol = window.confirm("Would you like to use $pecial Characters?");
-    let getRandomNumber = window.confirm("Would you like to use Number# Characters?");
+    var useUpperCase = window.confirm("Would you like to include UPPER case characters?");
+    var useLowerCase = window.confirm("Would you like to include lower case characters?");
+    var useSpecial = window.confirm("Would you like to include $pecial characters?");
+    var useNumbers = window.confirm("Would you like to include Numbers#?");
   }
-   
-  return getPassword(getRandomUpper, getRandomLower, getRandomSymbol, getRandomNumber, passwordLength)
-
+   return getPassword(useUpperCase, useLowerCase, useSpecial, useNumbers, passwordLength)
 }
-
-generateBtn.addEventListener("click", writePassword);
-
-
+//pushes to DOM
 function writePassword() {
   
-  let password = generatePassword();
-  let passwordText = document.querySelector("#password");
+  var password = generatePassword();
+  var passwordText = document.querySelector("#password");
   passwordText.value = password;
 }
+//button function
+generateBtn.addEventListener("click", writePassword);
